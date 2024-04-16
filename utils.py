@@ -37,6 +37,7 @@ def remove_all(item, seq):
 
 def unique(seq):
     """Remove duplicate elements from seq. Assumes hashable elements."""
+    print(" ta grand mere ")
     return list(set(seq))
 
 
