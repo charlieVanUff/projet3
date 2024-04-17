@@ -6,11 +6,40 @@ import sys
  
 
 def objective_score(board):
-    pass #TODO: Implement the objective function to calculate the score of the board
+    score = 0
+    for i in range(9)  : 
+        row = board[i]
+        col = [row[i] for row in board] 
+        block = get_block(board,i)
+        score += conflicts(row)
+        score += conflicts(col)
+        score += conflicts(block)
+    return score
+    
+def find_empty(board) : 
+    for i in range(len(board)) :
+        for j in range(len(board[0])) :
+            if board[i][j] == 0 : 
+                return (i,j)
+    return None
 
- 
-
- 
+def get_block(board,i) :
+    row = (i // 3) * 3
+    col = (i % 3 )* 3
+    arr = []
+    for j in range(3) :
+        for k in range(3) :
+            arr.append(board[row+j][col+k])
+    return arr
+def conflicts(board)  : 
+    list =  []
+    score = 0 
+    for i in range(9) : 
+        if board[i] in list :
+            score += 1
+        else : 
+            list.append(board[i])
+    return score
 
 def simulated_annealing_solver(initial_board):
 
@@ -87,14 +116,6 @@ if __name__ == "__main__":
     # Reading Sudoku from file
     initial_board = read_sudoku_from_file(sys.argv[1])
 
-    # Solving Sudoku using simulated annealing
-    start_timer = time.perf_counter()
-
-    solved_board, current_score = simulated_annealing_solver(initial_board)
-
-    end_timer = time.perf_counter()
-
-    print_board(solved_board)
-    print("\nValue(C):", current_score)
+    print(objective_score(initial_board))
 
     # print("\nTime taken:", end_timer - start_timer, "seconds")
